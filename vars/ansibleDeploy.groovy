@@ -8,8 +8,13 @@ def call(Map config = [:]) {
     pipeline {
 
         agent {
+            label 'Built-In Node'
+            }
+         tools {
 
-    label 'Built-In Node'
+    maven 'Maven3'
+
+    ansible 'Ansible'
 }
 
         environment {
@@ -68,6 +73,19 @@ def call(Map config = [:]) {
                     }
                 }
             }
+
+            stage('Build Application') {
+
+    steps {
+
+        script {
+
+            echo "========== Building Application =========="
+
+            sh 'mvn clean package -DskipTests'
+        }
+    }
+}
 
             stage('Execute Ansible Playbook') {
 
