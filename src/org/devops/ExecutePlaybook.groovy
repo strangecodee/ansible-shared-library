@@ -9,8 +9,9 @@ class ExecutePlaybook {
         script.sh """
         ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
         -i ${inventory} \
-         ${playbook} \
-         ${extraArgs ?: ''}
+        ${playbook} \
+        -e "workspace=${script.env.WORKSPACE}" \
+        ${extraArgs ?: ''}
         """
     }
 }
