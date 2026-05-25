@@ -7,7 +7,10 @@ def call(Map config = [:]) {
 
     pipeline {
 
-        agent any
+        agent {
+
+    label 'UBUNTU-NODE'
+}
 
         environment {
 
