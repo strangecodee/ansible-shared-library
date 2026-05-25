@@ -9,7 +9,7 @@ def call(Map config = [:]) {
 
         agent {
 
-    label 'UBUNTU-NODE'
+    label 'Built-In Node'
 }
 
         environment {
