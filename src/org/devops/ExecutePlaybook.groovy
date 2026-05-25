@@ -2,7 +2,7 @@ package org.devops
 
 class ExecutePlaybook {
 
-    static void execute(script, inventory, playbook, extraArgs) {
+    static void execute(script, inventory, playbook, extraArgs = '') {
 
         script.echo "========== Running Ansible Playbook =========="
 
@@ -10,7 +10,7 @@ class ExecutePlaybook {
         ansible-playbook \
         -i ${inventory} \
         ${playbook} \
-        ${extraArgs}
+        ${extraArgs ?: ''}
         """
     }
 }
