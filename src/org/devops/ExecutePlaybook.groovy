@@ -7,10 +7,10 @@ class ExecutePlaybook {
         script.echo "========== Running Ansible Playbook =========="
 
         script.sh """
-        ansible-playbook \
+        ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
         -i ${inventory} \
-        ${playbook} \
-        ${extraArgs ?: ''}
+         ${playbook} \
+         ${extraArgs ?: ''}
         """
     }
 }
