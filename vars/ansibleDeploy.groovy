@@ -7,9 +7,10 @@ def call(Map config = [:]) {
 
     pipeline {
 
-        agent {
-            label 'Built-In Node'
-            }
+        agent any
+        //  {
+        //     label 'Built-In Node'
+        //     }
          tools {
 
     maven 'Maven3'
