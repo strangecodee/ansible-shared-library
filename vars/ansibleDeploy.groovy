@@ -1,4 +1,4 @@
-```groovy
+
 import org.devops.CloneRepo
 import org.devops.UserApproval
 import org.devops.ExecutePlaybook
@@ -135,4 +135,3 @@ def call(Map config = [:]) {
         }
     }
 }
-```
