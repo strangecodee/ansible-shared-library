@@ -1,29 +1,29 @@
+```groovy
 import org.devops.CloneRepo
 import org.devops.UserApproval
 import org.devops.ExecutePlaybook
 import org.devops.Notification
+import org.devops.ValidateEnvironment
 
 def call(Map config = [:]) {
 
     pipeline {
 
         agent any
-        //  {
-        //     label 'Built-In Node'
-        //     }
-         tools {
 
-    maven 'Maven3'
+        tools {
 
-    ansible 'Ansible'
-}
+            ansible 'Ansible'
+        }
 
         environment {
 
             REPO_URL            = "${config.REPO_URL}"
+
             BRANCH              = "${config.BRANCH ?: 'main'}"
 
             INVENTORY           = "${config.INVENTORY}"
+
             PLAYBOOK            = "${config.PLAYBOOK}"
 
             ENVIRONMENT_NAME    = "${config.ENVIRONMENT_NAME}"
@@ -32,7 +32,7 @@ def call(Map config = [:]) {
 
             ACTION_MESSAGE      = "${config.ACTION_MESSAGE}"
 
-            KEEP_APPROVAL_STAGE = "${config.KEEP_APPROVAL_STAGE ?: false}"
+            KEEP_APPROVAL_STAGE = "${config.KEEP_APPROVAL_STAGE ?: 'false'}"
 
             EXTRA_ARGS          = "${config.EXTRA_ARGS ?: ''}"
         }
@@ -59,6 +59,7 @@ def call(Map config = [:]) {
                 when {
 
                     expression {
+
                         return KEEP_APPROVAL_STAGE == "true"
                     }
                 }
@@ -75,18 +76,16 @@ def call(Map config = [:]) {
                 }
             }
 
-            stage('Build Application') {
+            stage('Pre Deployment Validation') {
 
-    steps {
+                steps {
 
-        script {
+                    script {
 
-            echo "========== Building Application =========="
-
-            sh 'mvn clean package -DskipTests'
-        }
-    }
-}
+                        ValidateEnvironment.execute(this)
+                    }
+                }
+            }
 
             stage('Execute Ansible Playbook') {
 
@@ -98,7 +97,7 @@ def call(Map config = [:]) {
                             this,
                             INVENTORY,
                             PLAYBOOK,
-                            env.EXTRA_ARGS
+                            EXTRA_ARGS
                         )
                     }
                 }
@@ -119,5 +118,21 @@ def call(Map config = [:]) {
                 }
             }
         }
+
+        post {
+
+            failure {
+
+                script {
+
+                    Notification.execute(
+                        this,
+                        SLACK_CHANNEL_NAME,
+                        "Grafana and Prometheus Deployment Failed"
+                    )
+                }
+            }
+        }
     }
 }
+```
