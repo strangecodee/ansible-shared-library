@@ -1,3 +1,4 @@
+
 package org.devops
 
 class Config {
@@ -6,6 +7,8 @@ class Config {
 
         script.echo "========== Loading Configuration =========="
 
-        return script.readProperties file: fileName
+        return script.readProperties(
+            file: fileName
+        )
     }
 }
