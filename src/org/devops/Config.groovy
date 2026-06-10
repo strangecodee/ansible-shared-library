@@ -1,14 +1,18 @@
-
 package org.devops
+
+import java.util.Properties
 
 class Config {
 
-    static Map load(script, String fileName) {
+    static Map load(String filePath) {
 
-        script.echo "========== Loading Configuration =========="
+        println "========== Loading Configuration =========="
 
-        return script.readProperties(
-            file: fileName
-        )
+        Properties props = new Properties()
+        new File(filePath).withInputStream { stream ->
+            props.load(stream)
+        }
+
+        return props as Map
     }
 }
