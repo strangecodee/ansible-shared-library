@@ -7,6 +7,10 @@ class ExecutePlaybook {
         script.echo "========== Running Ansible Playbook =========="
 
         script.sh """
+        export PATH=\$PATH:/var/lib/jenkins/.local/bin
+
+        ansible --version
+
         ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
         -i ${inventory} \
         ${playbook} \
