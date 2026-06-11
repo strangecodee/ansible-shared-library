@@ -8,6 +8,7 @@ class ValidateEnvironment {
 
         script.sh '''
 
+        export PATH=$PATH:/var/lib/jenkins/.local/bin
         ansible --version
 
         pwd
