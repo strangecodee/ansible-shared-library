@@ -102,7 +102,7 @@ def call(Map config = [:]) {
                             this,
                             INVENTORY,
                             PLAYBOOK,
-                            EXTRA_ARGS
+                            env.EXTRA_ARGS
                         )
                     }
                 }
